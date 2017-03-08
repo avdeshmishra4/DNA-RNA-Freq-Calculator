@@ -1,0 +1,165 @@
+package frequencycalculator;
+
+import sequenceprocessor.Sequence;
+
+public class DNARNAFrequencyCalculator {
+	
+		
+	static int countA;
+	static int countB;	
+	static int countC;
+	static int countD;
+	
+	static int countG;
+	static int countH;
+	
+	static int countK;
+	
+	static int countM;
+	static int countN;
+	
+		
+	static int countR;	
+	static int countS;
+	static int countT;
+	static int countU;
+	static int countV;
+	static int countW;
+	static int countX;
+	static int countY;	
+	static int countOthers;
+	
+	static int totalDNARNACount;
+	
+	static int relativeFreqA;
+	static int relativeFreqB;	
+	static int relativeFreqC;
+	static int relativeFreqD;
+
+	static int relativeFreqG;
+	static int relativeFreqH;
+
+	static int relativeFreqK;
+	
+	static int relativeFreqM;
+	static int relativeFreqN;
+
+	static int relativeFreqR;	
+	static int relativeFreqS;
+	static int relativeFreqT;
+	static int relativeFreqU;
+	static int relativeFreqV;
+	static int relativeFreqW;
+	static int relativeFreqX;
+	static int relativeFreqY;	
+	static int relativeFreqOthers;
+	
+	/*
+	 * this method calculates frequency of each amino acid in the sequence, it also calculates total amino acid in a sequence
+	 * and ultimately sums it together
+	 */
+	
+	public static void  calculateDNARNAFrequency(Sequence seq){
+		
+		char[] nucleicAcidArray = seq.getSeq().toCharArray();
+		
+		totalDNARNACount += nucleicAcidArray.length;
+		
+		for(int i= 0; i< nucleicAcidArray.length; i++){
+			
+			switch(nucleicAcidArray[i]){
+			
+			
+			case 'A':
+				countA += 1;
+				break;
+			case 'B':
+				countB +=1;
+				break;
+			case 'C':
+				countC += 1;
+				break;
+			case 'D':
+				countD +=1;
+				break;
+			case 'G':
+				countG += 1;
+				break;
+			case 'H':
+				countH +=1;
+				break;
+			case 'K':
+				countK += 1;
+				break;
+			case 'M':
+				countM += 1;
+				break;
+			case 'N':
+				countN +=1;
+				break;
+			case 'R':
+				countR +=1;
+				break;
+			case 'S':
+				countS += 1;
+				break;
+			case 'T':
+				countT +=1;
+				break;
+			case 'U':
+				countU += 1;
+				break;
+			case 'V':
+				countV +=1;
+				break;
+			case 'W':
+				countW += 1;
+				break;
+			case 'X':
+				countX +=1;
+				break;
+			case 'Y':
+				countY += 1;
+				break;
+			default:
+				countOthers +=1;
+				break;
+			
+			}
+			
+		}
+		
+		
+	}
+	
+	/*
+	 * this method calculates relative frequency and store it into respective variables
+	 */
+	
+	public static void calculateDNARNARelativeFrequency(){
+		
+		relativeFreqA = countA/totalAminoAcidCount;
+		relativeFreqB = countB/totalAminoAcidCount;	
+		relativeFreqC = countC/totalAminoAcidCount;
+		relativeFreqD = countD/totalAminoAcidCount;
+		
+		relativeFreqG = countG/totalAminoAcidCount;
+		relativeFreqH = countH/totalAminoAcidCount;
+		relativeFreqK = countK/totalAminoAcidCount;
+		relativeFreqM = countM/totalAminoAcidCount;
+		relativeFreqN = countN/totalAminoAcidCount;
+		relativeFreqR = countR/totalAminoAcidCount;	
+		relativeFreqS = countS/totalAminoAcidCount;
+		relativeFreqT = countT/totalAminoAcidCount;
+		relativeFreqU = countU/totalAminoAcidCount;
+		relativeFreqV = countV/totalAminoAcidCount;
+		relativeFreqW = countW/totalAminoAcidCount;
+		relativeFreqX = countX/totalAminoAcidCount;
+		relativeFreqY = countY/totalAminoAcidCount;	
+		relativeFreqOthers = countOthers/totalAminoAcidCount;
+		
+		
+		
+	}
+
+}

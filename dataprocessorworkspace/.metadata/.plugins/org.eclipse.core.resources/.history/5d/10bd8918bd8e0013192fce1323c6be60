@@ -1,0 +1,212 @@
+package frequencycalculator;
+
+import sequenceprocessor.Sequence;
+
+public class FrequencyCalculator {
+	
+	
+	static int countA;
+	static int countB;	
+	static int countC;
+	static int countD;
+	static int countE;
+	static int countF;
+	static int countG;
+	static int countH;
+	static int countI;
+	static int countJ;
+	static int countK;
+	static int countL;
+	static int countM;
+	static int countN;
+	static int countO;
+	static int countP;
+	static int countQ;
+	static int countR;	
+	static int countS;
+	static int countT;
+	static int countU;
+	static int countV;
+	static int countW;
+	static int countX;
+	static int countY;	
+	static int countOthers;
+	
+	static int totalAminoAcidCount;
+	
+	static int relativeFreqA;
+	static int relativeFreqB;	
+	static int relativeFreqC;
+	static int relativeFreqD;
+	static int relativeFreqE;
+	static int relativeFreqF;
+	static int relativeFreqG;
+	static int relativeFreqH;
+	static int relativeFreqI;
+	static int relativeFreqJ;
+	static int relativeFreqK;
+	static int relativeFreqL;
+	static int relativeFreqM;
+	static int relativeFreqN;
+	static int relativeFreqO;
+	static int relativeFreqP;
+	static int relativeFreqQ;
+	static int relativeFreqR;	
+	static int relativeFreqS;
+	static int relativeFreqT;
+	static int relativeFreqU;
+	static int relativeFreqV;
+	static int relativeFreqW;
+	static int relativeFreqX;
+	static int relativeFreqY;	
+	static int relativeFreqOthers;
+	
+	/*
+	 * this method calculates frequency of each amino acid in the sequence, it also calculates total amino acid in a sequence
+	 * and ultimately sums it together
+	 */
+	
+	public static void  calculateFrequency(Sequence seq){
+		
+		char[] aminoAcidArray = seq.getSeq().toCharArray();
+		
+		totalAminoAcidCount += aminoAcidArray.length;
+		
+		for(int i= 0; i< aminoAcidArray.length; i++){
+			
+			switch(aminoAcidArray[i]){
+			
+			
+			case 'A':
+				countA += 1;
+				break;
+			case 'B':
+				countB +=1;
+				break;
+			case 'C':
+				countC += 1;
+				break;
+			case 'D':
+				countD +=1;
+				break;
+			case 'E':
+				countE += 1;
+				break;
+			case 'F':
+				countF +=1;
+				break;
+			case 'G':
+				countG += 1;
+				break;
+			case 'H':
+				countH +=1;
+				break;
+			case 'I':
+				countI += 1;
+				break;
+			case 'J':
+				countJ +=1;
+				break;
+			case 'K':
+				countK += 1;
+				break;
+			case 'L':
+				countL +=1;
+				break;
+			case 'M':
+				countM += 1;
+				break;
+			case 'N':
+				countN +=1;
+				break;
+			case 'O':
+				countO += 1;
+				break;
+			case 'P':
+				countP +=1;
+				break;
+			case 'Q':
+				countQ += 1;
+				break;
+			case 'R':
+				countR +=1;
+				break;
+			case 'S':
+				countS += 1;
+				break;
+			case 'T':
+				countT +=1;
+				break;
+			case 'U':
+				countU += 1;
+				break;
+			case 'V':
+				countV +=1;
+				break;
+			case 'W':
+				countW += 1;
+				break;
+			case 'X':
+				countX +=1;
+				break;
+			case 'Y':
+				countY += 1;
+				break;
+			default:
+				countOthers +=1;
+				break;
+			
+			
+			
+			}
+			
+			
+			
+			
+			
+		}
+		
+		
+	}
+	
+	/*
+	 * this method calculates relative frequency and store it into respective variables
+	 */
+	
+	public static void calculateRelativeFrequency(){
+		
+		relativeFreqA = countA/totalAminoAcidCount;
+		relativeFreqB = countB/totalAminoAcidCount;	
+		relativeFreqC = countC/totalAminoAcidCount;
+		relativeFreqD = countD/totalAminoAcidCount;
+		relativeFreqE = countE/totalAminoAcidCount;
+		relativeFreqF = countF/totalAminoAcidCount;
+		relativeFreqG = countG/totalAminoAcidCount;
+		relativeFreqH = countH/totalAminoAcidCount;
+		relativeFreqI = countI/totalAminoAcidCount;
+		relativeFreqJ = countJ/totalAminoAcidCount;
+		relativeFreqK = countK/totalAminoAcidCount;
+		relativeFreqL = countL/totalAminoAcidCount;
+		relativeFreqM = countM/totalAminoAcidCount;
+		relativeFreqN = countN/totalAminoAcidCount;
+		relativeFreqO = countO/totalAminoAcidCount;
+		relativeFreqP = countP/totalAminoAcidCount;
+		relativeFreqQ = countQ/totalAminoAcidCount;
+		relativeFreqR = countR/totalAminoAcidCount;	
+		relativeFreqS = countS/totalAminoAcidCount;
+		relativeFreqT = countT/totalAminoAcidCount;
+		relativeFreqU = countU/totalAminoAcidCount;
+		relativeFreqV = countV/totalAminoAcidCount;
+		relativeFreqW = countW/totalAminoAcidCount;
+		relativeFreqX = countX/totalAminoAcidCount;
+		relativeFreqY = countY/totalAminoAcidCount;	
+		relativeFreqOthers = countOthers/totalAminoAcidCount;
+		
+		
+		
+	}
+	
+	
+	
+
+}

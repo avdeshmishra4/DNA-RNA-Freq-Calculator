@@ -1,0 +1,494 @@
+package frequencycalculator;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.IOException;
+import java.util.Scanner;
+
+import sequenceprocessor.Sequence;
+import InputOutput.BufferReaderAndWriter;
+
+public class MainExecutorForProteinSequence {
+
+	public static void main(String[] args) throws IOException {
+
+		char[] nonDNA = { 'E', 'F', 'I', 'J', 'L', 'O', 'P', 'Q' }; // These are
+																	// one
+																	// letter
+																	// code for
+																	// acids
+																	// which are
+																	// not
+																	// present
+																	// in DNA
+		boolean isProtein = false;
+
+		Scanner scanner = new Scanner(System.in);			// To read input from console
+		System.out
+				.print("Enter a directory and file name that you want to process" + '\n');
+		System.out.flush();
+		String filename = scanner.nextLine();				// To read input file name from the console
+
+		System.out
+				.print("Enter a directory and file name to write sequence in fasta format" + '\n');
+		String fastaOPFileName = scanner.nextLine();		// To write a fasta file
+
+		System.out
+				.print("Enter a directory and file name to write relative frequencies" + '\n');
+		String rltvFreqFileName = scanner.nextLine();		// To write relative frequencies which can be used further to draw bargraph
+
+		// String ratusFileName =
+		// "E:/SPRING2014/bioinformatics-course/dataset/Habronattus oregonensisProtSeq.fasta";
+		// String sampleOutput =
+		// "E:/SPRING2014/bioinformatics-course/dataset/Habronattusprotseqeoutput.fasta";
+
+		// String spidersDNAFileName =
+		// "E:/SPRING2014/bioinformatics-course/dataset/Habronattus oregonensisDNARNASeq.fasta";
+		// String spidersDNAOutput =
+		// "E:/SPRING2014/bioinformatics-course/dataset/Habronattus oregonensisDNARNASeqOutput.fasta";
+
+		// File ratusFile = new File(ratusFileName);
+		
+		
+//		Enter a directory and file name that you want to process
+//		E:/SPRING2014/bioinformatics-course/dataset/Habronattus oregonensisDNARNASeq.fasta
+//		Enter a directory and file name to write sequence in fasta format
+//		E:/SPRING2014/bioinformatics-course/dataset/Habronattus oregonensisDNARNASeqOutput.fasta
+//		Enter a directory and file name to write relative frequencies
+//		E:/SPRING2014/bioinformatics-course/dataset/rltvfreq.txt
+
+		File ipFile = new File(filename);					// initialize the input file type
+		File outputWriter = new File(fastaOPFileName);		// initialize the fasta file type
+		File rltvOPWriter = new File(rltvFreqFileName);		// initialize the relative frequency file type
+
+		String eachLine;
+		BufferedReader br = BufferReaderAndWriter.getReader(ipFile);		// initialize buffer reader to read first sequence of the file
+		BufferedWriter bw = BufferReaderAndWriter.getWriter(outputWriter);	// initialize buffer to write fasta file
+		BufferedWriter rltvOPBuffer = BufferReaderAndWriter
+				.getWriter(rltvOPWriter);
+
+		/*
+		 * Here i am checking the first sequence of the file and taking decision
+		 * whether to process file as protein sequence or DNA/RNA sequence
+		 * 
+		 * so if the sequence is protein then boolean "isProtein" is set to
+		 * "true" else it remains "false"
+		 */
+
+		StringBuilder firstSeq = new StringBuilder();
+		while ((eachLine = br.readLine()) != null) {
+
+			String protSeq;
+
+			if (eachLine.startsWith(">")) {
+
+				while ((protSeq = br.readLine()) != null
+						&& protSeq.length() > 0) {
+
+					if (protSeq.charAt(0) != '>') {
+						firstSeq.append(protSeq);
+
+					}
+
+				}
+
+				break;
+
+			}
+
+		}
+		char[] firstSeqCharArray = firstSeq.toString().toCharArray();
+
+		for (int x = 0; x < firstSeqCharArray.length; x++) {
+
+			for (int y = 0; y < nonDNA.length; y++) {
+
+				if (firstSeqCharArray[x] == nonDNA[y]) {
+
+					isProtein = true;
+					break;
+
+				}
+
+			}
+
+			if (isProtein) {
+
+				break;
+
+			}
+
+		}
+
+		/*
+		 * if is protein sequence then process as protein else process as DNA/RNA
+		 */
+
+		if (isProtein) {
+
+			BufferedReader proteinReader = BufferReaderAndWriter
+					.getReader(ipFile);
+			FrequencyCalculator fcProtein = new FrequencyCalculator();
+
+			while ((eachLine = proteinReader.readLine()) != null) {		// here while loop read each sequence from the file and set the sequence
+				Sequence seq = new Sequence();							//  object for further use, String builder is used to combined one sequence as a single string
+				String protSeq;
+				StringBuilder value = new StringBuilder();
+				if (eachLine.startsWith(">")) {
+
+					seq.setSeqID(eachLine);
+					while ((protSeq = proteinReader.readLine()) != null
+							&& protSeq.length() > 0) {
+
+						if (protSeq.charAt(0) != '>') {
+							value.append(protSeq);
+
+						}
+
+					}
+					seq.setSeq(value.toString());
+
+				}
+
+				// buffer writer writes the ID and sequence in fasta file
+
+				bw.write(seq.getSeqID().toString());
+				bw.newLine();
+				bw.write(seq.getSeq().toString());
+				bw.newLine();
+				
+				/*
+				 * calculateFrequency is the method within FrequencyCalculator class which calculates the 
+				 * frequency of each amino acid (keep track of each amino acid in whole fasta input file)
+				 */
+
+				fcProtein.calculateFrequency(seq);
+
+			}
+
+			/*
+			 * calculateRelativeFrequency is the method within FrequencyCalculator class which calculates the 
+			 * relative frequency of each amino acid
+			 */
+
+			fcProtein.calculateRelativeFrequency();
+
+			/*
+			 * this block prints output on console
+			 */
+			
+			System.out.println("Count of Total Amnio Acid == "
+					+ String.valueOf(fcProtein.totalAminoAcidCount));
+			System.out.println("Relative Frequency of A == "
+					+ String.valueOf(fcProtein.relativeFreqA));
+			System.out.println("Relative Frequency of B == "
+					+ String.valueOf(fcProtein.relativeFreqB));
+			System.out.println("Relative Frequency of C == "
+					+ String.valueOf(fcProtein.relativeFreqC));
+			System.out.println("Relative Frequency of D == "
+					+ String.valueOf(fcProtein.relativeFreqD));
+			System.out.println("Relative Frequency of E == "
+					+ String.valueOf(fcProtein.relativeFreqE));
+			System.out.println("Relative Frequency of F == "
+					+ String.valueOf(fcProtein.relativeFreqF));
+			System.out.println("Relative Frequency of G == "
+					+ String.valueOf(fcProtein.relativeFreqG));
+			System.out.println("Relative Frequency of H == "
+					+ String.valueOf(fcProtein.relativeFreqH));
+			System.out.println("Relative Frequency of I == "
+					+ String.valueOf(fcProtein.relativeFreqI));
+			System.out.println("Relative Frequency of J == "
+					+ String.valueOf(fcProtein.relativeFreqJ));
+			System.out.println("Relative Frequency of K == "
+					+ String.valueOf(fcProtein.relativeFreqK));
+			System.out.println("Relative Frequency of L == "
+					+ String.valueOf(fcProtein.relativeFreqL));
+			System.out.println("Relative Frequency of M == "
+					+ String.valueOf(fcProtein.relativeFreqM));
+			System.out.println("Relative Frequency of N == "
+					+ String.valueOf(fcProtein.relativeFreqN));
+			System.out.println("Relative Frequency of O == "
+					+ String.valueOf(fcProtein.relativeFreqO));
+			System.out.println("Relative Frequency of P == "
+					+ String.valueOf(fcProtein.relativeFreqP));
+			System.out.println("Relative Frequency of Q == "
+					+ String.valueOf(fcProtein.relativeFreqQ));
+			System.out.println("Relative Frequency of R == "
+					+ String.valueOf(fcProtein.relativeFreqR));
+			System.out.println("Relative Frequency of S == "
+					+ String.valueOf(fcProtein.relativeFreqS));
+			System.out.println("Relative Frequency of T == "
+					+ String.valueOf(fcProtein.relativeFreqT));
+			System.out.println("Relative Frequency of U == "
+					+ String.valueOf(fcProtein.relativeFreqU));
+			System.out.println("Relative Frequency of V == "
+					+ String.valueOf(fcProtein.relativeFreqV));
+			System.out.println("Relative Frequency of W == "
+					+ String.valueOf(fcProtein.relativeFreqW));
+			System.out.println("Relative Frequency of X == "
+					+ String.valueOf(fcProtein.relativeFreqX));
+			System.out.println("Relative Frequency of Y == "
+					+ String.valueOf(fcProtein.relativeFreqY));
+
+			/*
+			 * this block prints relative frequency of each amino acid in a file for Protein Sequence
+			 * 
+			 * I have defined "Other" as # (Other imply: "*", "-" etc)
+			 */
+
+			
+			rltvOPBuffer.write("A,"
+					+ String.valueOf(fcProtein.relativeFreqA));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("B,"
+					+ String.valueOf(fcProtein.relativeFreqB));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("C,"
+					+ String.valueOf(fcProtein.relativeFreqC));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("D,"
+					+ String.valueOf(fcProtein.relativeFreqD));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("E,"
+					+ String.valueOf(fcProtein.relativeFreqE));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("F,"
+					+ String.valueOf(fcProtein.relativeFreqF));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("G,"
+					+ String.valueOf(fcProtein.relativeFreqG));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("H,"
+					+ String.valueOf(fcProtein.relativeFreqH));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("I,"
+					+ String.valueOf(fcProtein.relativeFreqI));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("J,"
+					+ String.valueOf(fcProtein.relativeFreqJ));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("K,"
+					+ String.valueOf(fcProtein.relativeFreqK));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("L,"
+					+ String.valueOf(fcProtein.relativeFreqL));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("M,"
+					+ String.valueOf(fcProtein.relativeFreqM));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("N,"
+					+ String.valueOf(fcProtein.relativeFreqN));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("O,"
+					+ String.valueOf(fcProtein.relativeFreqO));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("P,"
+					+ String.valueOf(fcProtein.relativeFreqP));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("Q,"
+					+ String.valueOf(fcProtein.relativeFreqQ));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("R,"
+					+ String.valueOf(fcProtein.relativeFreqR));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("S,"
+					+ String.valueOf(fcProtein.relativeFreqS));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("T,"
+					+ String.valueOf(fcProtein.relativeFreqT));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("U,"
+					+ String.valueOf(fcProtein.relativeFreqU));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("V,"
+					+ String.valueOf(fcProtein.relativeFreqV));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("W,"
+					+ String.valueOf(fcProtein.relativeFreqW));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("X,"
+					+ String.valueOf(fcProtein.relativeFreqX));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("Y,"
+					+ String.valueOf(fcProtein.relativeFreqY));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("#,"
+					+ String.valueOf(fcProtein.relativeFreqY));
+
+			bw.close();								// after finish writing close fasta file buffer writer
+			rltvOPBuffer.close();					// after finish writing close relative freq buffer writer
+
+		} else {
+			
+			/*
+			 * if not protein sequence or is DNA/RNA then process as DNA/RNA
+			 */
+			
+			
+
+			BufferedReader dnaRnaReader = BufferReaderAndWriter
+					.getReader(ipFile);
+			DNARNAFrequencyCalculator drfc = new DNARNAFrequencyCalculator();
+			while ((eachLine = dnaRnaReader.readLine()) != null) {		// here while loop read each sequence from the file and set the sequence
+				Sequence seq = new Sequence();							//  object for further use, String builder is used to combined one sequence as a single string
+				String DNASeq;
+				StringBuilder value = new StringBuilder();
+				if (eachLine.startsWith(">")) {
+
+					seq.setSeqID(eachLine);
+					while ((DNASeq = dnaRnaReader.readLine()) != null
+							&& DNASeq.length() > 0) {
+
+						if (DNASeq.charAt(0) != '>') {
+							value.append(DNASeq);
+
+						}
+
+					}
+					seq.setSeq(value.toString());
+
+				}
+
+				// buffer writer writes the ID and sequence in fasta file
+
+				bw.write(seq.getSeqID().toString());
+				bw.newLine();
+				bw.write(seq.getSeq().toString());
+				bw.newLine();
+
+				/*
+				 * calculateDNARNAFrequency is the method within DNARNAFrequencyCalculator class which calculates the 
+				 * frequency of each Nucleic acid (keep track of each Nucleic acid in whole fasta input file)
+				 */
+				
+				drfc.calculateDNARNAFrequency(seq);
+
+			}
+
+			/*
+			 * calculateDNARNARelativeFrequency is the method within DNARNAFrequencyCalculator class which calculates the 
+			 * relative frequency of each Nucleic acid
+			 */
+			
+			drfc.calculateDNARNARelativeFrequency();
+		
+			System.out.println("Count of Total Nucliec Acid == "
+					+ String.valueOf(drfc.totalDNARNACount));
+
+			/*
+			 * this block prints output on console
+			 */
+
+			System.out.println("Relative Frequency of A == "
+					+ String.valueOf(drfc.relativeFreqA));
+			System.out.println("Relative Frequency of B == "
+					+ String.valueOf(drfc.relativeFreqB));
+			System.out.println("Relative Frequency of C == "
+					+ String.valueOf(drfc.relativeFreqC));
+			System.out.println("Relative Frequency of D == "
+					+ String.valueOf(drfc.relativeFreqD));
+
+			System.out.println("Relative Frequency of G == "
+					+ String.valueOf(drfc.relativeFreqG));
+			System.out.println("Relative Frequency of H == "
+					+ String.valueOf(drfc.relativeFreqH));
+
+			System.out.println("Relative Frequency of K == "
+					+ String.valueOf(drfc.relativeFreqK));
+
+			System.out.println("Relative Frequency of M == "
+					+ String.valueOf(drfc.relativeFreqM));
+			System.out.println("Relative Frequency of N == "
+					+ String.valueOf(drfc.relativeFreqN));
+
+			System.out.println("Relative Frequency of R == "
+					+ String.valueOf(drfc.relativeFreqR));
+			System.out.println("Relative Frequency of S == "
+					+ String.valueOf(drfc.relativeFreqS));
+			System.out.println("Relative Frequency of T == "
+					+ String.valueOf(drfc.relativeFreqT));
+			System.out.println("Relative Frequency of U == "
+					+ String.valueOf(drfc.relativeFreqU));
+			System.out.println("Relative Frequency of V == "
+					+ String.valueOf(drfc.relativeFreqV));
+			System.out.println("Relative Frequency of W == "
+					+ String.valueOf(drfc.relativeFreqW));
+			System.out.println("Relative Frequency of X == "
+					+ String.valueOf(drfc.relativeFreqX));
+			System.out.println("Relative Frequency of Y == "
+					+ String.valueOf(drfc.relativeFreqY));
+
+			/*
+			 * this block prints output in a file for DNA/RNA
+			 * 
+			 * I have defined "Other" as # (Other imply: "*", "-" etc)
+			 */
+
+			rltvOPBuffer.write("A,"
+					+ String.valueOf(drfc.relativeFreqA));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("B,"
+					+ String.valueOf(drfc.relativeFreqB));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("C,"
+					+ String.valueOf(drfc.relativeFreqC));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("D,"
+					+ String.valueOf(drfc.relativeFreqD));
+			rltvOPBuffer.newLine();
+
+			rltvOPBuffer.write("G,"
+					+ String.valueOf(drfc.relativeFreqG));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("H,"
+					+ String.valueOf(drfc.relativeFreqH));
+			rltvOPBuffer.newLine();
+
+			rltvOPBuffer.write("K,"
+					+ String.valueOf(drfc.relativeFreqK));
+			rltvOPBuffer.newLine();
+
+			rltvOPBuffer.write("M,"
+					+ String.valueOf(drfc.relativeFreqM));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("N,"
+					+ String.valueOf(drfc.relativeFreqN));
+			rltvOPBuffer.newLine();
+
+			rltvOPBuffer.write("R,"
+					+ String.valueOf(drfc.relativeFreqR));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("S,"
+					+ String.valueOf(drfc.relativeFreqS));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("T,"
+					+ String.valueOf(drfc.relativeFreqT));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("U,"
+					+ String.valueOf(drfc.relativeFreqU));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("V,"
+					+ String.valueOf(drfc.relativeFreqV));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("W,"
+					+ String.valueOf(drfc.relativeFreqW));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("X,"
+					+ String.valueOf(drfc.relativeFreqX));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("Y,"
+					+ String.valueOf(drfc.relativeFreqY));
+			rltvOPBuffer.newLine();
+			rltvOPBuffer.write("#,"
+					+ String.valueOf(drfc.relativeFreqOthers));
+
+			bw.close();					// after finish writing close fasta file buffer writer
+			rltvOPBuffer.close();					// after finish writing close relative freq buffer writer
+			
+
+		}
+
+	}
+
+}

@@ -1,0 +1,26 @@
+1391452901775	Rename type 'ReadAndWriteFIle'
+1391452996263	Rename method 'getUTFReader'
+1391453008857	Rename method 'getUTFWriter'
+1391458378144	Delete element
+1391458411166	Delete element
+1391461796133	Delete element
+1391461872380	Delete element
+1391463855458	Delete element
+1391463880607	Rename type 'HomoSapiens'
+1391463969437	Rename type 'readFileAndCalculatefrequency'
+1391466395122	Rename method 'readFileAndCalculateFrequency'
+1391474645651	Rename type 'MainExecutor'
+1391490443541	Copy compilation unit
+1391490449910	Delete element
+1391490639808	Copy compilation unit
+1391490646340	Delete element
+1391490699738	Copy compilation unit
+1391490741545	Copy package
+1391490833063	Copy compilation unit
+1391490901335	Copy compilation unit
+1391724384178	Rename type 'FrequencyCalculator'
+1391724405076	Rename type 'MainExecutorForProteinSequence'
+1391726016134	Copy compilation unit
+1391726021559	Copy compilation unit
+1391726036512	Delete element
+1391726041410	Delete element

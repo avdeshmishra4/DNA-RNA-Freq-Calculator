@@ -1,0 +1,200 @@
+package frequencycalculator;
+
+import sequenceprocessor.Sequence;
+
+public class ProteinFrequencyCalculator {
+
+	int countA;
+	int countB;
+	int countC;
+	int countD;
+	int countE;
+	int countF;
+	int countG;
+	int countH;
+	int countI;
+	int countJ;
+	int countK;
+	int countL;
+	int countM;
+	int countN;
+	int countO;
+	int countP;
+	int countQ;
+	int countR;
+	int countS;
+	int countT;
+	int countU;
+	int countV;
+	int countW;
+	int countX;
+	int countY;
+	int countOthers;
+
+	double totalAminoAcidCount;
+
+	float relativeFreqA;
+	float relativeFreqB;
+	float relativeFreqC;
+	float relativeFreqD;
+	float relativeFreqE;
+	float relativeFreqF;
+	float relativeFreqG;
+	float relativeFreqH;
+	float relativeFreqI;
+	float relativeFreqJ;
+	float relativeFreqK;
+	float relativeFreqL;
+	float relativeFreqM;
+	float relativeFreqN;
+	float relativeFreqO;
+	float relativeFreqP;
+	float relativeFreqQ;
+	float relativeFreqR;
+	float relativeFreqS;
+	float relativeFreqT;
+	float relativeFreqU;
+	float relativeFreqV;
+	float relativeFreqW;
+	float relativeFreqX;
+	float relativeFreqY;
+	float relativeFreqOthers;
+
+	/*
+	 * this method calculates frequency of each amino acid in the sequence, it
+	 * also calculates total amino acid in a sequence and ultimately sums it
+	 * together
+	 */
+
+	public void calculateFrequency(Sequence seq) {
+
+		char[] aminoAcidArray = seq.getSeq().toCharArray();
+
+		totalAminoAcidCount += aminoAcidArray.length;
+
+		for (int i = 0; i < aminoAcidArray.length; i++) {
+
+			switch (aminoAcidArray[i]) {
+
+			case 'A':
+				countA += 1;
+				break;
+			case 'B':
+				countB += 1;
+				break;
+			case 'C':
+				countC += 1;
+				break;
+			case 'D':
+				countD += 1;
+				break;
+			case 'E':
+				countE += 1;
+				break;
+			case 'F':
+				countF += 1;
+				break;
+			case 'G':
+				countG += 1;
+				break;
+			case 'H':
+				countH += 1;
+				break;
+			case 'I':
+				countI += 1;
+				break;
+			case 'J':
+				countJ += 1;
+				break;
+			case 'K':
+				countK += 1;
+				break;
+			case 'L':
+				countL += 1;
+				break;
+			case 'M':
+				countM += 1;
+				break;
+			case 'N':
+				countN += 1;
+				break;
+			case 'O':
+				countO += 1;
+				break;
+			case 'P':
+				countP += 1;
+				break;
+			case 'Q':
+				countQ += 1;
+				break;
+			case 'R':
+				countR += 1;
+				break;
+			case 'S':
+				countS += 1;
+				break;
+			case 'T':
+				countT += 1;
+				break;
+			case 'U':
+				countU += 1;
+				break;
+			case 'V':
+				countV += 1;
+				break;
+			case 'W':
+				countW += 1;
+				break;
+			case 'X':
+				countX += 1;
+				break;
+			case 'Y':
+				countY += 1;
+				break;
+			default:
+				countOthers += 1;
+				break;
+
+			}
+
+		}
+
+	}
+
+	/*
+	 * this method calculates relative frequency and store it into respective
+	 * variables
+	 */
+
+	public void calculateRelativeFrequency() {
+
+		relativeFreqA = (float)(countA / totalAminoAcidCount);
+		relativeFreqB = (float)(countB / totalAminoAcidCount);
+		relativeFreqC = (float)(countC / totalAminoAcidCount);
+		relativeFreqD = (float)(countD / totalAminoAcidCount);
+		relativeFreqE = (float)(countE / totalAminoAcidCount);
+		relativeFreqF = (float)(countF / totalAminoAcidCount);
+		relativeFreqG = (float)(countG / totalAminoAcidCount);
+		relativeFreqH = (float)(countH / totalAminoAcidCount);
+		relativeFreqI = (float)(countI / totalAminoAcidCount);
+		relativeFreqJ = (float)(countJ / totalAminoAcidCount);
+		relativeFreqK = (float)(countK / totalAminoAcidCount);
+		relativeFreqL = (float)(countL / totalAminoAcidCount);
+		relativeFreqM = (float)(countM / totalAminoAcidCount);
+		relativeFreqN = (float)(countN / totalAminoAcidCount);
+		relativeFreqO = (float)(countO / totalAminoAcidCount);
+		relativeFreqP = (float)(countP / totalAminoAcidCount);
+		relativeFreqQ = (float)(countQ / totalAminoAcidCount);
+		relativeFreqR = (float)(countR / totalAminoAcidCount);
+		relativeFreqS = (float)(countS / totalAminoAcidCount);
+		relativeFreqT = (float)(countT / totalAminoAcidCount);
+		relativeFreqU = (float)(countU / totalAminoAcidCount);
+		relativeFreqV = (float)(countV / totalAminoAcidCount);
+		relativeFreqW = (float)(countW / totalAminoAcidCount);
+		relativeFreqX = (float)(countX / totalAminoAcidCount);
+		relativeFreqY = (float)(countY / totalAminoAcidCount);
+		relativeFreqOthers = (float)(countOthers / totalAminoAcidCount);
+
+	}
+
+}
